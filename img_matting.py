@@ -14,7 +14,7 @@ def rgb2gray(image):
 	return result
 
 
-img = mread('E:\download\qq\demo_dcnnmatting\demo\data\inputs\doll.png')
+img = imread('E:\download\qq\demo_dcnnmatting\demo\data\inputs\doll.png')
 trimap = imread('E:\download\qq\demo_dcnnmatting\demo\data\Trimap1\doll.png')
 
 print(img.size)
