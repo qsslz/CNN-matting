@@ -1,6 +1,7 @@
 import numpy as np 
-
 from scipy.misc import imread
+import math
+import random
 
 def rgb2gray(image):
 	result = np.zeros((image.shape[0], image.shape[1]))
@@ -71,7 +72,29 @@ def knnmatting(im, scrib):
 	m = im.shape[0]
 	n = im.shape[1]
 	d = im.shape[2]	
-	val = scrib 
+	val = scrib > 0.99
+	map_matting = (scrib < 0.01) + val
+	nn =  np.array([[10],[2]])
+	a = np.zeros((1, m * n))
+	b = np.zeros((1, m * n))
+	i = 1
+	j = 1
+	for j in range(1, n + 1):
+		for i in range(1, m + 1):
+			a[0][(j-1)*m+i-1]=i
+			b[0][(j-1)*m+i-1]=j
+			i =+ 1
+		j =+ 1
+	feature = np.zeros((6, m * n))
+	feature[0, :] = reshape2rows(np.cos(im[:,:,0] * 2 * np.pi)).T * factor
+	feature[1, :] = reshape2rows(np.sin(im[:,:,0] * 2 * np.pi)).T * factor
+	feature[2, :] = reshape2rows(im[:,:,1]).T / 2
+	feature[3, :] = reshape2rows(im[:,:,2]).T / 2
+	feature[4, :] = a / np.sqrt(m*m+n*n)*level+ np.random.rand(1, m*n)*1e-6
+	feature[5, :] = b / np.sqrt(m*m+n*n)*level+ np.random.rand(1, m*n)*1e-6
+	now = 0
+
+	
 img = imread('/Users/qusong/Desktop/毕业设计/demo/demo/data/inputs/doll.png')
 trimap = imread('/Users/qusong/Desktop/毕业设计/demo/demo/data/Trimap1/doll.png')
 trimap = rgb2gray(trimap)
